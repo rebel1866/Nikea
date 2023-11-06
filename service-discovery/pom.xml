@@ -8,8 +8,8 @@
         <version>3.1.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example.eureka.server</groupId>
-    <artifactId>eureka-server</artifactId>
+    <groupId>com.ikea</groupId>
+    <artifactId>service-discovery</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>eureka-server</name>
     <description>Demo project for Spring Boot</description>
