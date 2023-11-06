@@ -1,4 +1,4 @@
-package com.ikea.productservice.dao.model;
+package com.nikea.productservice.dao.model;
 
 
 

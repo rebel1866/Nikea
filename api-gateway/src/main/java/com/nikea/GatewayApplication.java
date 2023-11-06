@@ -1,4 +1,4 @@
-package com.ikea;
+package com.nikea;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

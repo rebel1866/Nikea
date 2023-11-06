@@ -1,4 +1,4 @@
-package com.ikea.productservice;
+package com.nikea.productservice;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
