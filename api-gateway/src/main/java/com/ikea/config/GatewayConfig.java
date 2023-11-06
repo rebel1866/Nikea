@@ -10,7 +10,7 @@ public class GatewayConfig {
     @Bean
     public RouteLocator configureRoute(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("furnitureId", r->r.path("/furniture/**").uri("lb://PRODUCT-SERVICE"))
+                .route("productId", r->r.path("/product/**").uri("lb://PRODUCT-SERVICE"))
                 .route("orderId", r->r.path("/order/**").uri("lb://ORDER-SERVICE"))
                 .build();
     }

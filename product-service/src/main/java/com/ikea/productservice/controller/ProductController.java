@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/furniture")
-public class FurnitureController {
+@RequestMapping("/product")
+public class ProductController {
     @GetMapping("/get")
     public void get(){
         System.out.println("get furniture");
