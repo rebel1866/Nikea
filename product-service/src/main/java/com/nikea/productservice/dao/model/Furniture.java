@@ -13,24 +13,37 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "furniture")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Furniture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "color")
     private String color;
+
     @Column(name = "price")
     private Double price;
+
     @Column(name = "type_id")
     @Enumerated(EnumType.ORDINAL)
     private FurnitureType furnitureType;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "furniture_id")
     private List<FurnitureSize> availableSizes;

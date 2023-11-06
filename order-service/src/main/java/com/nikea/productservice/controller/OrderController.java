@@ -1,6 +1,7 @@
-package com.nikea.productservice;
+package com.nikea.productservice.controller;
 
 
+import com.nikea.productservice.restintegration.ProductClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,6 @@ public class OrderController {
     @GetMapping("/get")
     public void get(){
         System.out.println("get order");
-        productClient.getUsers();
+        productClient.getProduct(53L);
     }
 }
