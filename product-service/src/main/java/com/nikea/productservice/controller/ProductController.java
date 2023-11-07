@@ -37,7 +37,6 @@ public class ProductController {
         return productService.createProduct(furnitureDto);
     }
     @PutMapping("/{id}")
-    @PostMapping(consumes = "application/json", produces = "application/json")
     public FurnitureDto editProduct(@PathVariable("id") Long id,
                                     @RequestBody FurnitureDto furnitureDto){
         return productService.editProduct(id, furnitureDto);

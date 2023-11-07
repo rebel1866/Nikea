@@ -1,23 +1,20 @@
-package com.nikea.productservice.dao.model;
+package com.nikea.productservice.service.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Document(collection = "orders")
-public class Order {
-    @Id
+public class OrderDto {
     private String id;
     private Long furnitureId;
     private Integer totalPrice;
