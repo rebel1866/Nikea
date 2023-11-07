@@ -2,9 +2,9 @@ package com.nikea.productservice.service.impl;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
-import com.nikea.productservice.restintegration.ProductService;
 import com.nikea.productservice.service.OrderMapper;
 import com.nikea.productservice.service.OrderService;
+import com.nikea.productservice.service.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.dto.FurnitureType;
 import com.nikea.productservice.service.dto.OrderDto;
@@ -33,7 +33,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        FurnitureDto furnitureDto = productService.getProduct(orderDto.getFurnitureId());
+        FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
+        if (furnitureDto.getId() == null) {
+            return new OrderDto();
+        }
         Integer totalPrice = calculateTotalPrice(furnitureDto);
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
@@ -62,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         switch (furnitureDto.getType()) {
             case CHAIR -> {
                 int avSize = furnitureDto.getAvailableSizes().size();
-                return avSize > 1 ? random(avSize) : random(furnitureDto.getPrice());
+                return avSize > 1 ? random(avSize) : random((int) Math.round(furnitureDto.getPrice()));
             }
             case TABLE -> {
                 return random((int) (FurnitureType.CHAIR.ordinal() + furnitureDto.getPrice()));
@@ -80,7 +83,4 @@ public class OrderServiceImpl implements OrderService {
         return (int) (input + Math.random() * 250);
     }
 
-    private Integer random(double input) {
-        return random(input);
-    }
 }

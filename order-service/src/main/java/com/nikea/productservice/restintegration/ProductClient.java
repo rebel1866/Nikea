@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-@FeignClient(value = "PRODUCT-SERVICE", fallback = ProductServiceFallback.class)
-public interface ProductService {
+@FeignClient(value = "PRODUCT-SERVICE")
+public interface ProductClient {
     @RequestMapping(value = "/product/{id}", method = GET)
     FurnitureDto getProduct(@PathVariable("id") Long id);
 }
