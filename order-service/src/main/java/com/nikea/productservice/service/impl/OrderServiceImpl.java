@@ -2,7 +2,7 @@ package com.nikea.productservice.service.impl;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
-import com.nikea.productservice.restintegration.ProductClient;
+import com.nikea.productservice.restintegration.ProductService;
 import com.nikea.productservice.service.OrderMapper;
 import com.nikea.productservice.service.OrderService;
 import com.nikea.productservice.service.dto.FurnitureDto;
@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
 
     private @Autowired OrderRepository orderRepository;
     private @Autowired OrderMapper orderMapper;
-    private @Autowired ProductClient productClient;
+    private @Autowired ProductService productService;
 
     @Override
     public List<OrderDto> getAll() {
@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        FurnitureDto furnitureDto = productClient.getProduct(orderDto.getFurnitureId());
+        FurnitureDto furnitureDto = productService.getProduct(orderDto.getFurnitureId());
         Integer totalPrice = calculateTotalPrice(furnitureDto);
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
