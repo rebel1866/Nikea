@@ -1,4 +1,4 @@
-package com.nikea.productservice.service;
+package com.nikea.productservice.service.mapper;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.service.dto.OrderDto;

@@ -1,4 +1,4 @@
-package com.nikea.productservice.service;
+package com.nikea.productservice.service.logic;
 
 import com.nikea.productservice.service.dto.OrderDto;
 

@@ -1,7 +1,7 @@
 package com.nikea.productservice.controller;
 
 
-import com.nikea.productservice.service.OrderService;
+import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.dto.OrderDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

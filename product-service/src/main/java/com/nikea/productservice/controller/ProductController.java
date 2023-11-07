@@ -1,6 +1,6 @@
 package com.nikea.productservice.controller;
 
-import com.nikea.productservice.service.ProductService;
+import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

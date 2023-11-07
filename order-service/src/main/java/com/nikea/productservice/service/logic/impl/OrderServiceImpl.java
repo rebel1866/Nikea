@@ -1,10 +1,10 @@
-package com.nikea.productservice.service.impl;
+package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
-import com.nikea.productservice.service.OrderMapper;
-import com.nikea.productservice.service.OrderService;
-import com.nikea.productservice.service.ProductService;
+import com.nikea.productservice.service.mapper.OrderMapper;
+import com.nikea.productservice.service.logic.OrderService;
+import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.dto.FurnitureType;
 import com.nikea.productservice.service.dto.OrderDto;

@@ -1,7 +1,7 @@
-package com.nikea.productservice.service.impl;
+package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.restintegration.ProductClient;
-import com.nikea.productservice.service.ProductService;
+import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
