@@ -58,16 +58,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Integer calculateTotalPrice(FurnitureDto furnitureDto) {
-        // simulates call to another microservice that calculates total price considering furniture type
-        // and available sizes
-        // (random logic)
+        // some random logic to calculate Total price based on furniture price, furniture type and available sizes...
         switch (furnitureDto.getType()) {
             case CHAIR -> {
                 int avSize = furnitureDto.getAvailableSizes().size();
-                return avSize > 1 ? random(avSize) : random(avSize * 2);
+                return avSize > 1 ? random(avSize) : random(furnitureDto.getPrice());
             }
             case TABLE -> {
-                return random(FurnitureType.CHAIR.ordinal());
+                return random((int) (FurnitureType.CHAIR.ordinal() + furnitureDto.getPrice()));
             }
             case CLOSET -> {
                 return random(FurnitureType.CLOSET.ordinal());
@@ -80,5 +78,9 @@ public class OrderServiceImpl implements OrderService {
 
     private Integer random(int input) {
         return (int) (input + Math.random() * 250);
+    }
+
+    private Integer random(double input) {
+        return random(input);
     }
 }
