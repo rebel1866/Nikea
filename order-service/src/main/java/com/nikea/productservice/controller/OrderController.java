@@ -23,7 +23,7 @@ import java.util.List;
 public class OrderController {
     private @Autowired OrderService orderService;
     private @Autowired ConfigProperties configProperties;
-    Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @GetMapping("/{id}")
     public OrderDto getById(@PathVariable String id) {

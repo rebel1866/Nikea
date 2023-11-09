@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductService {
     private @Autowired ProductClient productClient;
-    private Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @CircuitBreaker(name = "breaker", fallbackMethod = "fallbackMethod")
     @Override
