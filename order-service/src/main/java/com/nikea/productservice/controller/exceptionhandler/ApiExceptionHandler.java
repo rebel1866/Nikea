@@ -1,6 +1,7 @@
 package com.nikea.productservice.controller.exceptionhandler;
 
 import feign.FeignException;
+import io.github.resilience4j.bulkhead.BulkheadFullException;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,10 @@ public class ApiExceptionHandler {
     @ExceptionHandler({FeignException.class})
     public ResponseEntity<String> handleFeignException() {
         return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({BulkheadFullException.class})
+    public ResponseEntity<String> handleBulkHeadException() {
+        return new ResponseEntity<>("Bulkhead exception", HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
     }
 }
