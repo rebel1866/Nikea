@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.concurrent.TimeoutException;
+
 @ControllerAdvice
 public class ApiExceptionHandler {
     @ExceptionHandler({CallNotPermittedException.class})
@@ -17,5 +19,10 @@ public class ApiExceptionHandler {
     @ExceptionHandler({FeignException.class})
     public ResponseEntity<String> handleFeignException() {
         return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({TimeoutException.class})
+    public ResponseEntity<String> handleTimeoutException() {
+        return new ResponseEntity<>("Timeout exceeded", HttpStatus.REQUEST_TIMEOUT);
     }
 }

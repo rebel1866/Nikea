@@ -15,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
     private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
-    @CircuitBreaker(name = "CircuitBreakerService")
+//    @CircuitBreaker(name = "CircuitBreakerService")
     public FurnitureDto getProductById(Long id)  {
         return productClient.getProduct(id);
     }

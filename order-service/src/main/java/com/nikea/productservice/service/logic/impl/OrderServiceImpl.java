@@ -2,13 +2,13 @@ package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
-import com.nikea.productservice.service.mapper.OrderMapper;
-import com.nikea.productservice.service.logic.OrderService;
-import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.dto.FurnitureType;
 import com.nikea.productservice.service.dto.OrderDto;
-import io.github.resilience4j.retry.annotation.Retry;
+import com.nikea.productservice.service.logic.OrderService;
+import com.nikea.productservice.service.logic.ProductService;
+import com.nikea.productservice.service.mapper.OrderMapper;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Retry(name = "retryApi", fallbackMethod = "fallbackAfterRetry")
     public OrderDto createOrder(OrderDto orderDto) {
         logger.info("Entered createOrder()");
         FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
@@ -48,11 +47,6 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setDateTime(LocalDateTime.now());
         Order order = orderRepository.save(orderMapper.toEntity(orderDto));
         return orderMapper.toDto(order);
-    }
-
-    public OrderDto fallbackAfterRetry(Exception e) {
-        logger.info("Retry fallback method");
-        return new OrderDto();
     }
 
     @Override
