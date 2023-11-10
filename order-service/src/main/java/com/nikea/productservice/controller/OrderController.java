@@ -5,6 +5,7 @@ import com.nikea.productservice.config.ConfigProperties;
 import com.nikea.productservice.service.dto.OrderDto;
 import com.nikea.productservice.service.logic.OrderService;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class OrderController {
         return orderService.getAll();
     }
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @Bulkhead(name="bulkheadApi")
+    @RateLimiter(name = "rateLimiterApi")
     public OrderDto addOrder(@RequestBody OrderDto orderDto){
         return orderService.createOrder(orderDto);
     }

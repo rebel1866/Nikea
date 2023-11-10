@@ -19,10 +19,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public FurnitureDto getById(Long id) {
-        try {
-            TimeUnit.SECONDS.sleep(20);
-        } catch (Exception ignore) {
-        }
         return productMapper.toDto(productRepository.findById(id).orElse(null));
     }
 

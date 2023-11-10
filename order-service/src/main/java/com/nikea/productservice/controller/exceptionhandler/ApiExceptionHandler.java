@@ -3,6 +3,7 @@ package com.nikea.productservice.controller.exceptionhandler;
 import feign.FeignException;
 import io.github.resilience4j.bulkhead.BulkheadFullException;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,5 +24,10 @@ public class ApiExceptionHandler {
     @ExceptionHandler({BulkheadFullException.class})
     public ResponseEntity<String> handleBulkHeadException() {
         return new ResponseEntity<>("Bulkhead exception", HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+    }
+
+    @ExceptionHandler({RequestNotPermitted.class})
+    public ResponseEntity<String> handleRequestNotPermitted() {
+        return new ResponseEntity<>("Too many requests", HttpStatus.TOO_MANY_REQUESTS);
     }
 }
