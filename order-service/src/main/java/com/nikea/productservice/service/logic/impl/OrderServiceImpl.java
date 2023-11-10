@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-//    @Retry(name = "retryApi", fallbackMethod = "fallbackAfterRetry")
+    @Retry(name = "retryApi", fallbackMethod = "fallbackAfterRetry")
     public OrderDto createOrder(OrderDto orderDto) {
         logger.info("Entered createOrder()");
         FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
@@ -50,10 +50,10 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(order);
     }
 
-//    public OrderDto fallbackAfterRetry(Exception ex) {
-//        logger.info("Retry fallback method");
-//        return new OrderDto();
-//    }
+    public OrderDto fallbackAfterRetry(Exception e) {
+        logger.info("Retry fallback method");
+        return new OrderDto();
+    }
 
     @Override
     public OrderDto editOrder(String id, OrderDto orderDto) {
