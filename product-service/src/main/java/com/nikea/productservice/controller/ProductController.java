@@ -2,6 +2,7 @@ package com.nikea.productservice.controller;
 
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
+import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public FurnitureDto getById(@PathVariable Long id) {
+    public FurnitureDto getById(@PathVariable Long id) throws ProductServiceException {
         return productService.getById(id);
     }
     @GetMapping

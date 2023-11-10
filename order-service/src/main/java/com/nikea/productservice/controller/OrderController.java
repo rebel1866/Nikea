@@ -3,6 +3,7 @@ package com.nikea.productservice.controller;
 
 import com.nikea.productservice.config.ConfigProperties;
 import com.nikea.productservice.service.dto.OrderDto;
+import com.nikea.productservice.service.exception.OrderServiceException;
 import com.nikea.productservice.service.logic.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class OrderController {
     private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @GetMapping("/{id}")
-    public OrderDto getById(@PathVariable String id) {
+    public OrderDto getById(@PathVariable String id) throws OrderServiceException {
         logger.info(configProperties.getTestValue());
         logger.info(configProperties.getAnotherTestValue());
         return orderService.getById(id);
@@ -36,12 +37,12 @@ public class OrderController {
         return orderService.getAll();
     }
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public OrderDto addOrder(@RequestBody OrderDto orderDto){
+    public OrderDto addOrder(@RequestBody OrderDto orderDto) throws OrderServiceException {
         return orderService.createOrder(orderDto);
     }
     @PutMapping("/{id}")
     public OrderDto editOrder(@PathVariable("id") String id,
-                                    @RequestBody OrderDto orderDto){
+                                    @RequestBody OrderDto orderDto) throws OrderServiceException {
         return orderService.editOrder(id, orderDto);
     }
     @DeleteMapping("/{id}")

@@ -2,6 +2,7 @@ package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
+import com.nikea.productservice.service.exception.OrderServiceException;
 import com.nikea.productservice.service.mapper.OrderMapper;
 import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.logic.ProductService;
@@ -27,15 +28,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getById(String id) {
-        return orderMapper.toDto(orderRepository.findById(id).orElse(null));
+    public OrderDto getById(String id) throws OrderServiceException {
+        return orderMapper.toDto(orderRepository.findById(id).
+                orElseThrow(()-> new OrderServiceException("No order found with given id: " + id)));
     }
 
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
+    public OrderDto createOrder(OrderDto orderDto) throws OrderServiceException {
         FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
         if (furnitureDto.getId() == null) {
-            return new OrderDto();
+           throw new OrderServiceException("No product found with given id: " + orderDto.getFurnitureId());
         }
         Integer totalPrice = calculateTotalPrice(furnitureDto);
         orderDto.setTotalPrice(totalPrice);
@@ -45,11 +47,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto editOrder(String id, OrderDto orderDto) {
-        Order order = orderRepository.findById(id).orElse(null);
-        if (order == null) {
-            return new OrderDto();
-        }
+    public OrderDto editOrder(String id, OrderDto orderDto) throws OrderServiceException {
+        Order order = orderRepository.findById(id).
+                orElseThrow(()-> new OrderServiceException("No order found with given id: " + id));
         order.setComment(orderDto.getComment());
         order.setTotalPrice(orderDto.getTotalPrice());
         return orderMapper.toDto(orderRepository.save(order));

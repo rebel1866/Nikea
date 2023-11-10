@@ -4,6 +4,7 @@ import com.nikea.productservice.dao.model.Furniture;
 import com.nikea.productservice.dao.repository.ProductRepository;
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
+import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import com.nikea.productservice.service.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,9 @@ public class ProductServiceImpl implements ProductService {
     private @Autowired ProductMapper productMapper;
 
     @Override
-    public FurnitureDto getById(Long id) {
-        return productMapper.toDto(productRepository.findById(id).orElse(null));
+    public FurnitureDto getById(Long id) throws ProductServiceException {
+        return productMapper.toDto(productRepository.findById(id).
+                orElseThrow(() -> new ProductServiceException("No product found with id: " + id)));
     }
 
     @Override
