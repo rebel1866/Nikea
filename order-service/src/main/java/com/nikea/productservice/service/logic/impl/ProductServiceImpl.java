@@ -15,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
     private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
-    @CircuitBreaker(name = "CircuitBreakerService")  //fallbackMethod = "fallbackMethod"
+    @CircuitBreaker(name = "CircuitBreakerService", fallbackMethod = "fallbackMethod")
     public FurnitureDto getProductById(Long id)  {
         return productClient.getProduct(id);
     }
