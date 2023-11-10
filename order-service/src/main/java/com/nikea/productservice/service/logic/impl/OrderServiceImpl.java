@@ -8,6 +8,9 @@ import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.dto.FurnitureType;
 import com.nikea.productservice.service.dto.OrderDto;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
     private @Autowired OrderRepository orderRepository;
     private @Autowired OrderMapper orderMapper;
     private @Autowired ProductService productService;
+    private final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Override
     public List<OrderDto> getAll() {
@@ -32,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+//    @Retry(name = "retryApi", fallbackMethod = "fallbackAfterRetry")
     public OrderDto createOrder(OrderDto orderDto) {
+        logger.info("Entered createOrder()");
         FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
         if (furnitureDto.getId() == null) {
             return new OrderDto();
@@ -43,6 +49,11 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.save(orderMapper.toEntity(orderDto));
         return orderMapper.toDto(order);
     }
+
+//    public OrderDto fallbackAfterRetry(Exception ex) {
+//        logger.info("Retry fallback method");
+//        return new OrderDto();
+//    }
 
     @Override
     public OrderDto editOrder(String id, OrderDto orderDto) {
