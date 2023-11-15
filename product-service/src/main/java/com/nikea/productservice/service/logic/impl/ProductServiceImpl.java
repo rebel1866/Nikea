@@ -7,15 +7,21 @@ import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import com.nikea.productservice.service.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.support.locks.LockRegistry;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private @Autowired ProductRepository productRepository;
     private @Autowired ProductMapper productMapper;
+    private @Autowired LockRegistry lockRegistry;
+    private @Autowired JdbcTemplate jdbcTemplate;
 
     @Override
     public FurnitureDto getById(Long id) throws ProductServiceException {
@@ -35,9 +41,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public FurnitureDto editProduct(Long id, FurnitureDto furnitureDto) {
-        furnitureDto.setId(id);
-        return productMapper.toDto(productRepository.save(productMapper.toEntity(furnitureDto)));
+    public @Nullable FurnitureDto editProduct(Long id, FurnitureDto furnitureDto) {
+        var lock = lockRegistry.obtain(String.valueOf(id));
+        boolean lockAcquired;
+        try {
+            lockAcquired = lock.tryLock(2, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        FurnitureDto saved = null;
+        if (lockAcquired) {
+            try {
+                Furniture furniture = productRepository.findById(id).orElseThrow(RuntimeException::new);
+                furniture.setFurnitureType(furnitureDto.getType());
+                furniture.setColor(furnitureDto.getColor());
+                furniture.setPrice(furnitureDto.getPrice());
+                furniture.setName(furnitureDto.getName());
+                saved = productMapper.toDto(productRepository.save(furniture));
+            } finally {
+                lock.unlock();
+            }
+        }
+        return saved;
     }
 
     @Override
