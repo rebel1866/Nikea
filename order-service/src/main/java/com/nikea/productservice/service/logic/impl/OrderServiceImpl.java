@@ -3,11 +3,12 @@ package com.nikea.productservice.service.logic.impl;
 import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
 import com.nikea.productservice.service.exception.OrderServiceException;
+import com.nikea.productservice.service.logic.pricestrategy.PriceStrategy;
+import com.nikea.productservice.service.logic.pricestrategy.PriceStrategyHolder;
 import com.nikea.productservice.service.mapper.OrderMapper;
 import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
-import com.nikea.productservice.service.dto.FurnitureType;
 import com.nikea.productservice.service.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
     private @Autowired OrderRepository orderRepository;
     private @Autowired OrderMapper orderMapper;
     private @Autowired ProductService productService;
+    private @Autowired PriceStrategyHolder priceStrategyHolder;
 
     @Override
     public List<OrderDto> getAll() {
@@ -60,27 +62,11 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
-    private Integer calculateTotalPrice(FurnitureDto furnitureDto) {
+    private Integer calculateTotalPrice(FurnitureDto furnitureDto) throws OrderServiceException {
         // some random logic to calculate Total price based on furniture price, furniture type and available sizes...
-        switch (furnitureDto.getType()) {
-            case CHAIR -> {
-                int avSize = furnitureDto.getAvailableSizes().size();
-                return avSize > 1 ? random(avSize) : random((int) Math.round(furnitureDto.getPrice()));
-            }
-            case TABLE -> {
-                return random((int) (FurnitureType.CHAIR.ordinal() + furnitureDto.getPrice()));
-            }
-            case CLOSET -> {
-                return random(FurnitureType.CLOSET.ordinal());
-            }
-            default -> {
-                return 0;
-            }
-        }
-    }
-
-    private Integer random(int input) {
-        return (int) (input + Math.random() * 250);
+        PriceStrategy strategy = priceStrategyHolder.getAllTypes().stream().filter(el -> el.getType() == furnitureDto.getType()).findFirst().
+                orElseThrow(() -> new OrderServiceException("No appropriate strategy found"));
+        return strategy.calculatePrice(furnitureDto.getPrice());
     }
 
 }
