@@ -4,7 +4,6 @@ import com.nikea.productservice.dao.model.Order;
 import com.nikea.productservice.dao.repository.OrderRepository;
 import com.nikea.productservice.service.exception.OrderServiceException;
 import com.nikea.productservice.service.logic.pricestrategy.PriceStrategy;
-import com.nikea.productservice.service.logic.pricestrategy.PriceStrategyHolder;
 import com.nikea.productservice.service.mapper.OrderMapper;
 import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.logic.ProductService;
@@ -22,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private @Autowired OrderRepository orderRepository;
     private @Autowired OrderMapper orderMapper;
     private @Autowired ProductService productService;
-    private @Autowired PriceStrategyHolder priceStrategyHolder;
+    private @Autowired  List<PriceStrategy> priceStrategies;
 
     @Override
     public List<OrderDto> getAll() {
@@ -64,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Integer calculateTotalPrice(FurnitureDto furnitureDto) throws OrderServiceException {
         // some random logic to calculate Total price based on furniture price, furniture type and available sizes...
-        PriceStrategy strategy = priceStrategyHolder.getAllTypes().stream().filter(el -> el.getType() == furnitureDto.getType()).findFirst().
+        PriceStrategy strategy =  priceStrategies.stream().filter(el -> el.getType() == furnitureDto.getType()).findFirst().
                 orElseThrow(() -> new OrderServiceException("No appropriate strategy found"));
         return strategy.calculatePrice(furnitureDto.getPrice());
     }
