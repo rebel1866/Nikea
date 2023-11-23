@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
                 saved = productMapper.toDto(productRepository.save(furniture));
             }
         } catch (InterruptedException e) {
-            throw new ProductServiceException("Error while lock acquisition");
+            throw new ProductServiceException("Error while lock acquisition", e);
         } finally {
             lock.unlock();
         }
