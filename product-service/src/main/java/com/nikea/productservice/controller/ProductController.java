@@ -39,7 +39,7 @@ public class ProductController {
     }
     @PutMapping("/{id}")
     public FurnitureDto editProduct(@PathVariable("id") Long id,
-                                    @RequestBody FurnitureDto furnitureDto){
+                                    @RequestBody FurnitureDto furnitureDto) throws ProductServiceException {
         return productService.editProduct(id, furnitureDto);
     }
     @DeleteMapping("/{id}")

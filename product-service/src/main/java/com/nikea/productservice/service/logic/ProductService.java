@@ -13,7 +13,7 @@ public interface ProductService {
 
     FurnitureDto createProduct(FurnitureDto furnitureDto);
 
-    FurnitureDto editProduct(Long id, FurnitureDto furnitureDto);
+    FurnitureDto editProduct(Long id, FurnitureDto furnitureDto) throws ProductServiceException;
 
     void deleteById(Long id);
 }

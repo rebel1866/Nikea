@@ -42,26 +42,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public @Nullable FurnitureDto editProduct(Long id, FurnitureDto furnitureDto) {
+    public @Nullable FurnitureDto editProduct(Long id, FurnitureDto furnitureDto) throws ProductServiceException {
         var lock = lockRegistry.obtain(String.valueOf(id));
-        boolean lockAcquired;
-        try {
-            lockAcquired = lock.tryLock(2, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         FurnitureDto saved = null;
-        if (lockAcquired) {
-            try {
-                Furniture furniture = productRepository.findById(id).orElseThrow(RuntimeException::new);
+        try {
+            boolean lockAcquired = lock.tryLock(2, TimeUnit.SECONDS);
+            if (lockAcquired) {
+                Furniture furniture = productRepository.findById(id).orElseThrow(() ->
+                        new ProductServiceException("No product found with given id: " + id));
                 furniture.setFurnitureType(furnitureDto.getType());
                 furniture.setColor(furnitureDto.getColor());
                 furniture.setPrice(furnitureDto.getPrice());
                 furniture.setName(furnitureDto.getName());
                 saved = productMapper.toDto(productRepository.save(furniture));
-            } finally {
-                lock.unlock();
             }
+        } catch (InterruptedException e) {
+            throw new ProductServiceException("Error while lock acquisition");
+        } finally {
+            lock.unlock();
         }
         return saved;
     }
