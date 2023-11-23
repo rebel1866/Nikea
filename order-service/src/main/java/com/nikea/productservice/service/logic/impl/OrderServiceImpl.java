@@ -9,6 +9,7 @@ import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
 import com.nikea.productservice.service.dto.OrderDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private @Autowired OrderRepository orderRepository;
-    private @Autowired OrderMapper orderMapper;
-    private @Autowired ProductService productService;
-    private @Autowired  List<PriceStrategy> priceStrategies;
+    private OrderRepository orderRepository;
+    private OrderMapper orderMapper;
+    private ProductService productService;
+    private List<PriceStrategy> priceStrategies;
 
     @Override
     public List<OrderDto> getAll() {
