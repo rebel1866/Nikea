@@ -2,11 +2,11 @@ package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.dao.model.Furniture;
 import com.nikea.productservice.dao.repository.ProductRepository;
-import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.dto.FurnitureDto;
+import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import com.nikea.productservice.service.mapper.ProductMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
@@ -16,12 +16,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private @Autowired ProductRepository productRepository;
-    private @Autowired ProductMapper productMapper;
-    private @Autowired LockRegistry lockRegistry;
-    private @Autowired JdbcTemplate jdbcTemplate;
+    private ProductRepository productRepository;
+    private ProductMapper productMapper;
+    private LockRegistry lockRegistry;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public FurnitureDto getById(Long id) throws ProductServiceException {
