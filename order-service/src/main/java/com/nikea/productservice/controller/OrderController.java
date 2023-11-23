@@ -5,7 +5,6 @@ import com.nikea.productservice.config.ConfigProperties;
 import com.nikea.productservice.service.dto.OrderDto;
 import com.nikea.productservice.service.exception.OrderServiceException;
 import com.nikea.productservice.service.logic.OrderService;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @RefreshScope
-@RequiredArgsConstructor
 public class OrderController {
-    private OrderService orderService;
-    private ConfigProperties configProperties;
+    private @Autowired OrderService orderService;
+    private @Autowired ConfigProperties configProperties;
     private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @GetMapping("/{id}")
