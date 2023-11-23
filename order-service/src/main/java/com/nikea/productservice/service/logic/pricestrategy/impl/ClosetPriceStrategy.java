@@ -14,7 +14,7 @@ public class ClosetPriceStrategy extends AbstractPriceStrategy {
     }
 
     @Override
-    public int calculatePrice(double price) {
+    public double calculatePrice(double price) {
         return random(FurnitureType.CLOSET.ordinal());
     }
 }

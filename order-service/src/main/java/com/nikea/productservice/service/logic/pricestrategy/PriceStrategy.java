@@ -4,5 +4,5 @@ import com.nikea.productservice.service.dto.FurnitureType;
 
 public interface PriceStrategy {
     FurnitureType getType();
-    int calculatePrice(double price);
+    double calculatePrice(double price);
 }

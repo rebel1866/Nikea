@@ -1,7 +1,7 @@
 package com.nikea.productservice.service.logic.pricestrategy;
 
 public abstract class AbstractPriceStrategy implements PriceStrategy {
-    public Integer random(int input) {
-        return (int) (input + Math.random() * 250);
+    public Double random(int input) {
+        return input + Math.random() * 250;
     }
 }

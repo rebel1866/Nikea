@@ -20,7 +20,7 @@ public class Order {
     @Id
     private String id;
     private Long furnitureId;
-    private Integer totalPrice;
+    private Double totalPrice;
     private LocalDateTime dateTime;
     private String comment;
 }

@@ -31,16 +31,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getById(String id) throws OrderServiceException {
         return orderMapper.toDto(orderRepository.findById(id).
-                orElseThrow(()-> new OrderServiceException("No order found with given id: " + id)));
+                orElseThrow(() -> new OrderServiceException("No order found with given id: " + id)));
     }
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) throws OrderServiceException {
         FurnitureDto furnitureDto = productService.getProductById(orderDto.getFurnitureId());
         if (furnitureDto.getId() == null) {
-           throw new OrderServiceException("No product found with given id: " + orderDto.getFurnitureId());
+            throw new OrderServiceException("No product found with given id: " + orderDto.getFurnitureId());
         }
-        Integer totalPrice = calculateTotalPrice(furnitureDto);
+        Double totalPrice = calculateTotalPrice(furnitureDto);
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
         Order order = orderRepository.save(orderMapper.toEntity(orderDto));
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto editOrder(String id, OrderDto orderDto) throws OrderServiceException {
         Order order = orderRepository.findById(id).
-                orElseThrow(()-> new OrderServiceException("No order found with given id: " + id));
+                orElseThrow(() -> new OrderServiceException("No order found with given id: " + id));
         order.setComment(orderDto.getComment());
         order.setTotalPrice(orderDto.getTotalPrice());
         return orderMapper.toDto(orderRepository.save(order));
@@ -61,9 +61,9 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
-    private Integer calculateTotalPrice(FurnitureDto furnitureDto) throws OrderServiceException {
+    private Double calculateTotalPrice(FurnitureDto furnitureDto) throws OrderServiceException {
         // some random logic to calculate Total price based on furniture price, furniture type and available sizes...
-        PriceStrategy strategy =  priceStrategies.stream().filter(el -> el.getType() == furnitureDto.getType()).findFirst().
+        PriceStrategy strategy = priceStrategies.stream().filter(el -> el.getType() == furnitureDto.getType()).findFirst().
                 orElseThrow(() -> new OrderServiceException("No appropriate strategy found"));
         return strategy.calculatePrice(furnitureDto.getPrice());
     }

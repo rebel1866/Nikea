@@ -14,7 +14,7 @@ public class ChairPriceStrategy extends AbstractPriceStrategy {
     }
 
     @Override
-    public int calculatePrice(double price) {
+    public double calculatePrice(double price) {
         return random((int) Math.round(price));
     }
 }
