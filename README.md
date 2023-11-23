@@ -23,3 +23,14 @@ So that you could test this application you have to follow these rules:
 - To launch service use java -jar {-executable-file-name}.jar 
 - Services have to be run in the specific order - first Service discovery, then Config server, Api Gateway, Order service, Product Service and finally Notification Service
 - Make sure MongoDB and postgres databases are launched and running on default ports 
+
+Config server vm options:
+-Dspring.security.user.name=admin
+-Dspring.security.user.password=admin1
+-Dencrypt.key=secretword
+
+Product service vm options:
+-Dencrypt.key=secretword
+
+Order service vm options:
+-Dencrypt.key=secretword
