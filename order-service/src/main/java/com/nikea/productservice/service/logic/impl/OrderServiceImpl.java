@@ -7,6 +7,7 @@ import com.nikea.productservice.service.dto.OrderDto;
 import com.nikea.productservice.service.exception.OrderServiceException;
 import com.nikea.productservice.service.logic.OrderService;
 import com.nikea.productservice.service.logic.ProductService;
+import com.nikea.productservice.service.logic.messaging.MessageProducer;
 import com.nikea.productservice.service.logic.pricestrategy.PriceStrategy;
 import com.nikea.productservice.service.mapper.OrderMapper;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     private ProductService productService;
     private List<PriceStrategy> priceStrategies;
+    private MessageProducer messageProducer;
 
     @Override
     public List<OrderDto> getAll() {
@@ -45,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
         Order order = orderRepository.save(orderMapper.toEntity(orderDto));
+        messageProducer.sendMessage("Your order has been created.");
         return orderMapper.toDto(order);
     }
 
