@@ -2,11 +2,15 @@ package com.nikea.productservice.service.logic.impl;
 
 import com.nikea.productservice.dao.model.Furniture;
 import com.nikea.productservice.dao.repository.ProductRepository;
+import com.nikea.productservice.messaging.MessageProducer;
 import com.nikea.productservice.service.dto.FurnitureDto;
+import com.nikea.productservice.service.dto.OrderCreationEvent;
+import com.nikea.productservice.service.dto.ProductDecrementStatus;
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import com.nikea.productservice.service.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
@@ -23,6 +27,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     private LockRegistry lockRegistry;
     private JdbcTemplate jdbcTemplate;
+
+    private @Autowired MessageProducer messageProducer;
 
     @Override
     public FurnitureDto getById(Long id) throws ProductServiceException {
@@ -54,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
                 furniture.setColor(furnitureDto.getColor());
                 furniture.setPrice(furnitureDto.getPrice());
                 furniture.setName(furnitureDto.getName());
+                furniture.setAmount(furnitureDto.getAmount());
                 saved = productMapper.toDto(productRepository.save(furniture));
             }
         } catch (InterruptedException e) {
@@ -67,5 +74,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public void decrementAmount(Long productId) throws ProductServiceException {
+        Furniture furniture = productRepository.findById(productId).orElseThrow(() -> new ProductServiceException("Not found"));
+        if (furniture.getAmount() == 0) {
+            throw new ProductServiceException("No product left");
+        }
+        furniture.setAmount(furniture.getAmount() - 1);
+        editProduct(productId, productMapper.toDto(furniture));
+    }
+
+    @Override
+    public void decrementAndSendResult(OrderCreationEvent orderCreationEvent) {
+        try {
+            decrementAmount(orderCreationEvent.getFurnitureId());
+            orderCreationEvent.setDecrementStatus(ProductDecrementStatus.SUCCESS);
+        } catch (ProductServiceException e) {
+            orderCreationEvent.setDecrementStatus(ProductDecrementStatus.FAIL);
+        }
+        messageProducer.sendOrderCreationEvent(orderCreationEvent);
     }
 }

@@ -21,4 +21,5 @@ public class FurnitureDto {
     private Double price;
     private FurnitureType type;
     private List<FurnitureSizeDto> availableSizes;
+    private Integer amount;
 }

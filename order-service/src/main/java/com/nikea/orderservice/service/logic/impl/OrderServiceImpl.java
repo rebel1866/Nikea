@@ -1,15 +1,17 @@
-package com.nikea.productservice.service.logic.impl;
+package com.nikea.orderservice.service.logic.impl;
 
-import com.nikea.productservice.dao.model.Order;
-import com.nikea.productservice.dao.repository.OrderRepository;
-import com.nikea.productservice.service.dto.FurnitureDto;
-import com.nikea.productservice.service.dto.OrderDto;
-import com.nikea.productservice.service.exception.OrderServiceException;
-import com.nikea.productservice.service.logic.OrderService;
-import com.nikea.productservice.service.logic.ProductService;
-import com.nikea.productservice.service.logic.messaging.MessageProducer;
-import com.nikea.productservice.service.logic.pricestrategy.PriceStrategy;
-import com.nikea.productservice.service.mapper.OrderMapper;
+import com.nikea.orderservice.dao.model.Order;
+import com.nikea.orderservice.dao.repository.OrderRepository;
+import com.nikea.orderservice.service.dto.FurnitureDto;
+import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.orderservice.service.dto.OrderDto;
+import com.nikea.orderservice.service.dto.ProductDecrementStatus;
+import com.nikea.orderservice.service.exception.OrderServiceException;
+import com.nikea.orderservice.service.logic.OrderService;
+import com.nikea.orderservice.service.logic.ProductService;
+import com.nikea.orderservice.service.logic.messaging.MessageProducer;
+import com.nikea.orderservice.service.logic.pricestrategy.PriceStrategy;
+import com.nikea.orderservice.service.mapper.OrderMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
         Order order = orderRepository.save(orderMapper.toEntity(orderDto));
-        messageProducer.sendMessage("Your order has been created.");
+        messageProducer.sendOrderCreationEvent(new OrderCreationEvent(order.getId(), orderDto.getFurnitureId()));
         return orderMapper.toDto(order);
     }
 
@@ -72,4 +74,16 @@ public class OrderServiceImpl implements OrderService {
         return strategy.calculatePrice(furnitureDto.getPrice());
     }
 
+    @Override
+    public void handleProductResponse(OrderCreationEvent orderCreationEvent) {
+        if (orderCreationEvent.getDecrementStatus() == ProductDecrementStatus.FAIL) {
+            rollbackOrderCreation(orderCreationEvent.getOrderId());
+        } else {
+            messageProducer.sendMessage("Your order has been created.");
+        }
+    }
+
+    private void rollbackOrderCreation(String orderId) {
+        deleteById(orderId);
+    }
 }

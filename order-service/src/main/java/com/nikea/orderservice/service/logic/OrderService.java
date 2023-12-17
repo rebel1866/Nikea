@@ -1,7 +1,8 @@
-package com.nikea.productservice.service.logic;
+package com.nikea.orderservice.service.logic;
 
-import com.nikea.productservice.service.dto.OrderDto;
-import com.nikea.productservice.service.exception.OrderServiceException;
+import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.orderservice.service.dto.OrderDto;
+import com.nikea.orderservice.service.exception.OrderServiceException;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface OrderService {
     OrderDto editOrder(String id, OrderDto orderDto) throws OrderServiceException;
 
     void deleteById(String id);
+
+    void handleProductResponse(OrderCreationEvent orderCreationEvent);
 }

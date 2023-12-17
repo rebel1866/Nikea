@@ -81,7 +81,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.nikea.productservice.OrderServiceApplication.java</mainClass>
+					<mainClass>com.nikea.orderservice.OrderServiceApplication.java</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -18,6 +18,7 @@ public class ProductMapper {
         furniture.setPrice(dto.getPrice());
         furniture.setFurnitureType(dto.getType());
         furniture.setColor(dto.getColor());
+        furniture.setAmount(dto.getAmount());
         furniture.setAvailableSizes(dto.getAvailableSizes().stream().map(size ->
                         new FurnitureSize(size.getId(), size.getWidth(), size.getLength(), size.getHeight())).
                 collect(Collectors.toList()));
@@ -36,6 +37,7 @@ public class ProductMapper {
         dto.setPrice(entity.getPrice());
         dto.setType(entity.getFurnitureType());
         dto.setColor(entity.getColor());
+        dto.setAmount(entity.getAmount());
         dto.setAvailableSizes(entity.getAvailableSizes().stream().map(size ->
                         new FurnitureSizeDto(size.getId(), size.getWidth(), size.getLength(), size.getHeight())).
                 collect(Collectors.toList()));
