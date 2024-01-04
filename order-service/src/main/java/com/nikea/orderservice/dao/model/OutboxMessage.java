@@ -1,24 +1,21 @@
 package com.nikea.orderservice.dao.model;
 
-import java.time.LocalDateTime;
-
+import com.nikea.orderservice.service.dto.OrderCreationEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "orders")
-public class Order {
+@Document(collection = "outbox_messages")
+public class OutboxMessage {
     @Id
     private String id;
-    private Long furnitureId;
-    private Double totalPrice;
+    private OrderCreationEvent message;
     private LocalDateTime dateTime;
-    private String comment;
 }

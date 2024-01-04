@@ -8,6 +8,7 @@ import com.nikea.orderservice.service.dto.OrderDto;
 import com.nikea.orderservice.service.dto.ProductDecrementStatus;
 import com.nikea.orderservice.service.exception.OrderServiceException;
 import com.nikea.orderservice.service.logic.OrderService;
+import com.nikea.orderservice.service.logic.OutboxService;
 import com.nikea.orderservice.service.logic.ProductService;
 import com.nikea.orderservice.service.logic.messaging.MessageProducer;
 import com.nikea.orderservice.service.logic.pricestrategy.PriceStrategy;
@@ -25,9 +26,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private OrderMapper orderMapper;
     private ProductService productService;
+    private OutboxService outboxService;
     private List<PriceStrategy> priceStrategies;
     private MessageProducer messageProducer;
-
     @Override
     public List<OrderDto> getAll() {
         return orderMapper.toDto(orderRepository.findAll());
@@ -48,9 +49,7 @@ public class OrderServiceImpl implements OrderService {
         Double totalPrice = calculateTotalPrice(furnitureDto);
         orderDto.setTotalPrice(totalPrice);
         orderDto.setDateTime(LocalDateTime.now());
-        Order order = orderRepository.save(orderMapper.toEntity(orderDto));
-        messageProducer.sendOrderCreationEvent(new OrderCreationEvent(order.getId(), orderDto.getFurnitureId()));
-        return orderMapper.toDto(order);
+        return orderMapper.toDto(outboxService.saveAndSend(orderDto));
     }
 
     @Override
