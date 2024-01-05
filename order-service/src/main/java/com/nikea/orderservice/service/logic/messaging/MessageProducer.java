@@ -6,7 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class MessageProducer {
@@ -30,7 +33,7 @@ public class MessageProducer {
         kafkaTemplate.send(topic, message);
     }
 
-    public void sendOrderCreationEvent(OrderCreationEvent orderCreationEvent) {
-        orderKafkaTemplate.send(orderTopic, orderCreationEvent);
+    public CompletableFuture<SendResult<String, OrderCreationEvent>> sendOrderCreationEvent(OrderCreationEvent orderCreationEvent) {
+       return orderKafkaTemplate.send(orderTopic, orderCreationEvent);
     }
 }

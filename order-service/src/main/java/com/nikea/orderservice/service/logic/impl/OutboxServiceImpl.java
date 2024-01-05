@@ -10,12 +10,14 @@ import com.nikea.orderservice.service.logic.OutboxService;
 import com.nikea.orderservice.service.logic.messaging.MessageProducer;
 import com.nikea.orderservice.service.mapper.OrderMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @AllArgsConstructor
@@ -41,8 +43,8 @@ public class OutboxServiceImpl implements OutboxService {
     public void sendAndDelete() {
         List<OutboxMessage> outboxEntities = outboxRepository.findAll();
         for (OutboxMessage outbox : outboxEntities) {
-            messageProducer.sendOrderCreationEvent(outbox.getMessage());
-            outboxRepository.deleteById(outbox.getId());
+            CompletableFuture<SendResult<String, OrderCreationEvent>> futureResult = messageProducer.sendOrderCreationEvent(outbox.getMessage());
+            futureResult.thenAccept(result -> outboxRepository.deleteById(outbox.getId()));
         }
     }
 }
