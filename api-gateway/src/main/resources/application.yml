@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+     discovery:
+      locator:
+        enabled: true
+     routes:
+      - id: productId
+        uri: lb://PRODUCT-SERVICE
+        predicates:
+        - Path=/product/**
+      - id: orderId
+        uri: lb://ORDER-SERVICE
+        predicates:
+        - Path=/order/**
+server:
+  port: 7002
+eureka:
+  client:
+    serviceURL:
+      defaultZone: http://localhost:8761/eureka
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: '*'
