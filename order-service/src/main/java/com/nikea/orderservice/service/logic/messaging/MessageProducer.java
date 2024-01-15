@@ -1,6 +1,6 @@
 package com.nikea.orderservice.service.logic.messaging;
 
-import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

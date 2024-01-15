@@ -1,11 +1,11 @@
 package com.nikea.productservice.service.logic.impl;
 
+import com.nikea.event.OrderCreationEvent;
+import com.nikea.event.ProductDecrementStatus;
 import com.nikea.productservice.dao.model.Furniture;
 import com.nikea.productservice.dao.repository.ProductRepository;
 import com.nikea.productservice.messaging.MessageProducer;
 import com.nikea.productservice.service.dto.FurnitureDto;
-import com.nikea.productservice.service.dto.OrderCreationEvent;
-import com.nikea.productservice.service.dto.ProductDecrementStatus;
 import com.nikea.productservice.service.logic.ProductService;
 import com.nikea.productservice.service.logic.exception.ProductServiceException;
 import com.nikea.productservice.service.mapper.ProductMapper;

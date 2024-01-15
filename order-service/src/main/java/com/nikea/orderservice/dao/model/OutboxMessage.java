@@ -1,6 +1,6 @@
 package com.nikea.orderservice.dao.model;
 
-import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.nikea.orderservice.service.logic;
 
-import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import com.nikea.orderservice.service.dto.OrderDto;
 import com.nikea.orderservice.service.exception.OrderServiceException;
 

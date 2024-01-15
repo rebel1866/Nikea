@@ -1,6 +1,6 @@
 package com.nikea.orderservice.service.logic.messaging;
 
-import com.nikea.orderservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import com.nikea.orderservice.service.logic.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

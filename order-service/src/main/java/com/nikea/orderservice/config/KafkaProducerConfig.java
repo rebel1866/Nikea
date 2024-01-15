@@ -1,7 +1,7 @@
 package com.nikea.orderservice.config;
 
+import com.nikea.event.OrderCreationEvent;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import com.nikea.orderservice.service.dto.OrderCreationEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

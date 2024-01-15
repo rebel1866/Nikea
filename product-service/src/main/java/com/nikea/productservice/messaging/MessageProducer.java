@@ -1,6 +1,6 @@
 package com.nikea.productservice.messaging;
 
-import com.nikea.productservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;

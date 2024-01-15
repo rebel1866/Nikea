@@ -1,6 +1,6 @@
 package com.nikea.productservice.config;
 
-import com.nikea.productservice.service.dto.OrderCreationEvent;
+import com.nikea.event.OrderCreationEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
 package com.nikea.productservice.service.logic;
 
+import com.nikea.event.OrderCreationEvent;
 import com.nikea.productservice.service.dto.FurnitureDto;
-import com.nikea.productservice.service.dto.OrderCreationEvent;
 import com.nikea.productservice.service.logic.exception.ProductServiceException;
 
 import java.util.List;

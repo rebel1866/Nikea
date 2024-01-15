@@ -1,4 +1,4 @@
-package com.nikea.productservice.service.dto;
+package com.nikea.event;
 
 public enum ProductDecrementStatus {
     SUCCESS,
